@@ -1,3 +1,4 @@
+use core::traits::TryInto;
 pub mod models {
     pub mod dungeon;
     pub mod inventory;
@@ -70,7 +71,8 @@ fn register_player(call: Call, ref storage: Storage) -> Span<Diff> {
     let player = contract_address_const::<'p1'>();
 
     let mut name: ByteArray = Default::default();
-    name.append_word(*call.calldata.at(5), 5);
+    let name_len: u32 = (*call.calldata.at(6)).try_into().unwrap();
+    name.append_word(*call.calldata.at(5), name_len);
 
     storage.profile = Profile { player, name };
     storage.inventory = Inventory { player, gold: 100 };
@@ -186,4 +188,3 @@ mod tests {
         assert_eq!(main(args).len(), 9);
     }
 }
-
