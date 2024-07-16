@@ -30,8 +30,8 @@ struct Call {
 
 #[derive(Clone, Debug, Drop, Serde)]
 struct Diff {
-    player: ContractAddress,
-    gold: u64,
+    key: felt252,
+    value: felt252,
     // before: felt252, // The `upgrade_state` function could assert that state did not change during commitment.
 }
 
@@ -40,6 +40,7 @@ fn main(input: Array<felt252>) -> Array<felt252> {
     let mut calls = Serde::<Array<Call>>::deserialize(ref input).unwrap();
 
     let mut diffs = array![];
+    /// TODO: Loading from incoming storage.
     let mut storage = StorageTrait::default();
 
     loop {
@@ -48,7 +49,6 @@ fn main(input: Array<felt252>) -> Array<felt252> {
             Option::None => { break; },
         };
 
-        let _contract = *call.calldata.at(1);
         let method = *call.calldata.at(2);
 
         if method == 1259008560618804745770255768445176861078101720763151456759359170279920395577 {
@@ -69,39 +69,37 @@ fn main(input: Array<felt252>) -> Array<felt252> {
 
 fn register_player(call: Call, ref storage: Storage) -> Span<Diff> {
     let player = contract_address_const::<'p1'>();
-
     let mut name: ByteArray = Default::default();
     let name_len: u32 = (*call.calldata.at(6)).try_into().unwrap();
+
+    assert(name_len == 0, 'Name length is 0.');
+
     name.append_word(*call.calldata.at(5), name_len);
 
     storage.profile = Profile { player, name };
     storage.inventory = Inventory { player, gold: 100 };
 
-    array![Diff { player, gold: storage.inventory.gold }].span()
+    get_diff(ref storage)
 }
 
 fn enter_dungeons(call: Call, ref storage: Storage) -> Span<Diff> {
-    if storage.dungeon.moves > 0 {
-        panic!("The player is already in a dungeon.");
-    }
+    assert(storage.dungeon.moves > 0, 'Already in a dungeon.');
 
     storage.dungeon = DungeonTrait::enter(ref storage.inventory);
 
-    array![Diff { player: storage.inventory.player, gold: storage.inventory.gold }].span()
+    get_diff(ref storage)
 }
 
 fn fate_strike(call: Call, ref storage: Storage) -> Span<Diff> {
     let block_timestamp: u64 = 2;
     let has_won_round = block_timestamp % 2 == 0;
 
-    if storage.dungeon.moves == 0 {
-        panic!("Player is not in the dungeon yet.");
-    }
+    assert(storage.dungeon.moves == 0, 'Not in the dungeon yet.');
 
     storage.dungeon.moves += 1;
 
     if storage.dungeon.gold_in_purse == 0 {
-        return array![Diff { player: storage.inventory.player, gold: storage.inventory.gold }].span();
+        return get_diff(ref storage);
     }
 
     storage.dungeon.gold_in_purse -= 1;
@@ -120,15 +118,17 @@ fn fate_strike(call: Call, ref storage: Storage) -> Span<Diff> {
     if storage.dungeon.boss_health == 0 {
         let diffs = DungeonTrait::diffs(ref storage.dungeon);
 
-        if storage.inventory.gold < diffs.lost {
-            panic!("Player does not have enough gold.");
-        }
+        assert(storage.inventory.gold < diffs.lost, 'Not enough gold.');
 
         storage.inventory.gold -= diffs.lost;
         storage.inventory.gold += diffs.earned;
     }
 
-    array![Diff { player: storage.inventory.player, gold: storage.inventory.gold }].span()
+    get_diff(ref storage)
+}
+
+fn get_diff(ref storage: Storage) -> Span<Diff> {
+    array![Diff { key: storage.inventory.player.into(), value: storage.inventory.gold.into() }].span()
 }
 
 #[cfg(test)]
@@ -188,3 +188,4 @@ mod tests {
         assert_eq!(main(args).len(), 9);
     }
 }
+
