@@ -28,7 +28,7 @@ mod metagame {
             let mut profile = get!(world, player, (Profile));
             profile.name = name;
 
-            let inventory = Inventory { player, gold: 100, };
+            let inventory = Inventory { player, gold: 100 };
 
             set!(world, (profile, inventory));
         }

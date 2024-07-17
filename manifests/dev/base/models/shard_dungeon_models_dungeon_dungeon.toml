@@ -1,0 +1,40 @@
+kind = "DojoModel"
+class_hash = "0x6cb6a4b4f10f3c84fc31f0cfb27eff8fbccb6ac6c8ce452f42d207c33970f4f"
+original_class_hash = "0x6cb6a4b4f10f3c84fc31f0cfb27eff8fbccb6ac6c8ce452f42d207c33970f4f"
+abi = "manifests/dev/abis/base/models/shard_dungeon_models_dungeon_dungeon.json"
+name = "shard_dungeon::models::dungeon::dungeon"
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "moves"
+type = "u16"
+key = false
+
+[[members]]
+name = "boss_health"
+type = "u8"
+key = false
+
+[[members]]
+name = "gained_experience"
+type = "u64"
+key = false
+
+[[members]]
+name = "gold_in_purse"
+type = "u64"
+key = false
+
+[[members]]
+name = "starting_gold"
+type = "u64"
+key = false
+
+[[members]]
+name = "minimum_gold"
+type = "u64"
+key = false

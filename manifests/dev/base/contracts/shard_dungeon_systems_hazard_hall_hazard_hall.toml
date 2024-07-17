@@ -1,6 +1,6 @@
 kind = "DojoContract"
-class_hash = "0x18665747cdecdef4e2501ff1e08b6c200dc5d6543692ec70249f6500f4b26c"
-original_class_hash = "0x18665747cdecdef4e2501ff1e08b6c200dc5d6543692ec70249f6500f4b26c"
+class_hash = "0x631fb27174f0ae1323a18bb6d3fef36298eedee2bda24287f4565d8d618b844"
+original_class_hash = "0x631fb27174f0ae1323a18bb6d3fef36298eedee2bda24287f4565d8d618b844"
 base_class_hash = "0x0"
 abi = "manifests/dev/abis/base/contracts/shard_dungeon_systems_hazard_hall_hazard_hall.json"
 reads = []
