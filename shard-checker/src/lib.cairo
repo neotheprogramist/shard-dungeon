@@ -72,7 +72,7 @@ fn register_player(call: Call, ref storage: Storage) -> Span<Diff> {
     let mut name: ByteArray = Default::default();
     let name_len: u32 = (*call.calldata.at(6)).try_into().unwrap();
 
-    assert(name_len == 0, 'Name length is 0.');
+    assert(name_len != 0, 'Name length is 0.');
 
     name.append_word(*call.calldata.at(5), name_len);
 
@@ -83,7 +83,7 @@ fn register_player(call: Call, ref storage: Storage) -> Span<Diff> {
 }
 
 fn enter_dungeons(call: Call, ref storage: Storage) -> Span<Diff> {
-    assert(storage.dungeon.moves > 0, 'Already in a dungeon.');
+    assert(storage.dungeon.moves <= 0, 'Already in a dungeon.');
 
     storage.dungeon = DungeonTrait::enter(ref storage.inventory);
 
@@ -94,7 +94,7 @@ fn fate_strike(call: Call, ref storage: Storage) -> Span<Diff> {
     let block_timestamp: u64 = 2;
     let has_won_round = block_timestamp % 2 == 0;
 
-    assert(storage.dungeon.moves == 0, 'Not in the dungeon yet.');
+    assert(storage.dungeon.moves > 0, 'Not in the dungeon yet.');
 
     storage.dungeon.moves += 1;
 
@@ -118,7 +118,7 @@ fn fate_strike(call: Call, ref storage: Storage) -> Span<Diff> {
     if storage.dungeon.boss_health == 0 {
         let diffs = DungeonTrait::diffs(ref storage.dungeon);
 
-        assert(storage.inventory.gold < diffs.lost, 'Not enough gold.');
+        assert(storage.inventory.gold >= diffs.lost, 'Not enough gold.');
 
         storage.inventory.gold -= diffs.lost;
         storage.inventory.gold += diffs.earned;

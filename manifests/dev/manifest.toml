@@ -22,8 +22,8 @@ name = "dojo::base::base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x2c026278e1406bdac20301aed2a196cd5c5d76f4140bcc36f8de6737ef38002"
-class_hash = "0x18665747cdecdef4e2501ff1e08b6c200dc5d6543692ec70249f6500f4b26c"
-original_class_hash = "0x18665747cdecdef4e2501ff1e08b6c200dc5d6543692ec70249f6500f4b26c"
+class_hash = "0x631fb27174f0ae1323a18bb6d3fef36298eedee2bda24287f4565d8d618b844"
+original_class_hash = "0x631fb27174f0ae1323a18bb6d3fef36298eedee2bda24287f4565d8d618b844"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/shard_dungeon_systems_hazard_hall_hazard_hall.json"
 reads = []
@@ -44,6 +44,48 @@ writes = []
 computed = []
 init_calldata = []
 name = "shard_dungeon::systems::metagame::metagame"
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x6cb6a4b4f10f3c84fc31f0cfb27eff8fbccb6ac6c8ce452f42d207c33970f4f"
+original_class_hash = "0x6cb6a4b4f10f3c84fc31f0cfb27eff8fbccb6ac6c8ce452f42d207c33970f4f"
+abi = "manifests/dev/abis/deployments/models/shard_dungeon_models_dungeon_dungeon.json"
+name = "shard_dungeon::models::dungeon::dungeon"
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "moves"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "boss_health"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "gained_experience"
+type = "u64"
+key = false
+
+[[models.members]]
+name = "gold_in_purse"
+type = "u64"
+key = false
+
+[[models.members]]
+name = "starting_gold"
+type = "u64"
+key = false
+
+[[models.members]]
+name = "minimum_gold"
+type = "u64"
+key = false
 
 [[models]]
 kind = "DojoModel"
