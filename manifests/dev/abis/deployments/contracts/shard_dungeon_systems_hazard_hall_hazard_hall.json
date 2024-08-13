@@ -59,14 +59,43 @@
     "interface_name": "shard_dungeon::systems::hazard_hall::IHazardHall"
   },
   {
+    "type": "enum",
+    "name": "core::result::Result::<(), ()>",
+    "variants": [
+      {
+        "name": "Ok",
+        "type": "()"
+      },
+      {
+        "name": "Err",
+        "type": "()"
+      }
+    ]
+  },
+  {
     "type": "interface",
     "name": "shard_dungeon::systems::hazard_hall::IHazardHall",
     "items": [
       {
         "type": "function",
+        "name": "enter_dungeon",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::result::Result::<(), ()>"
+          }
+        ],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
         "name": "fate_strike",
         "inputs": [],
-        "outputs": [],
+        "outputs": [
+          {
+            "type": "core::result::Result::<(), ()>"
+          }
+        ],
         "state_mutability": "external"
       }
     ]

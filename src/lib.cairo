@@ -4,6 +4,7 @@ mod systems {
 }
 
 mod models {
+    pub mod dungeon;
     pub mod inventory;
     pub mod profile;
     pub mod stats;
